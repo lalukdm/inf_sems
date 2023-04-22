@@ -26,10 +26,12 @@ int main (){
     char str2[20] = "";
     
     while(1){
+        puts("enter string to search for:");
         scanf("%s", &str);
+        puts("enter string to look for at the end:");
         scanf("%s", &str2);
 
-        printf("%d\n", strend(str, str2));
+        printf("%s\n\n\n", (strend(str, str2) ? "True" : "False"));
     }
 
     return 0;

@@ -23,9 +23,11 @@ char* read_string() {
 }
 
 int main() {
+    puts("enter string");
+
     char* str = read_string();
 
-    printf("String: %s", str);
+    printf("String:\n%s", str);
     free(str);
         
     return 0;

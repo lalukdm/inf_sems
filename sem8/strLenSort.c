@@ -42,11 +42,13 @@ char* read_string() {
 
 int main(){
     int num_strings;
+    puts("enter number of strings");
     scanf("%d", &num_strings);
 
     char* str;
     int max_len;
 
+    puts("enter strings with 'Enter'");
     char ** strings = (char **)malloc(num_strings * sizeof(char *));
     for (int i = 0; i <= num_strings; i++){
         str = read_string();
@@ -60,6 +62,7 @@ int main(){
 
     ShellSort(strings, num_strings, max_len);
 
+    puts("\n\n\nsorted string:");
     for (int i = 0; i <= num_strings; i++) {
         printf("%s\n", strings[i]);
     }
