@@ -10,6 +10,6 @@
 void InitPointer();
 void MovePointer(int len, int* line);
 void ShowPointer(HDC dc);
-void ClearWindow (HDC dc);
+void ClearField (HDC dc, int left, int top, int right, int bottom);
 
 #endif // POINTER_H

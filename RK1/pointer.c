@@ -33,8 +33,10 @@ void ShowPointer (HDC dc){
     isMistake = false;
 }
 
-void ClearWindow (HDC dc){
+void ClearField (HDC dc, int left, int top, int right, int bottom){
+    SelectObject(dc, GetStockObject(DC_PEN));
+    SetDCPenColor(dc,RGB(255, 255, 255));
     SelectObject(dc, GetStockObject(DC_BRUSH));
     SetDCBrushColor(dc, RGB(255, 255, 255));
-    Rectangle(dc, 0, 0, 1080, 720);
+    Rectangle(dc, left, top, right, bottom);
 }

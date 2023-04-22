@@ -161,21 +161,26 @@ int main () {
                 CloseWindow(hwnd_set);
                 ShowWindow(hwnd, SW_SHOWNORMAL);
                 ShowPointer(dc);
-                isClose = true;
                 
+                SetBkMode(dc, TRANSPARENT);
+                SetTextColor(dc, RGB(0, 0, 0));
+                SelectObject(dc, fontRectangle);	
+
+                for (int i = 0; i <= 5 ; i++){
+                    InitTextField(i);
+                    DrawText(dc, text_str[i], -1, &textfield, DT_SINGLELINE);
+                }
+
+                isClose = true;
                 start = clock();
             }
             
-            SetBkMode(dc, TRANSPARENT);
-            SetTextColor(dc, RGB(0, 0, 0));
-            SelectObject(dc, fontRectangle);	
             
             if (!isEnded) {
                 int line_count, current_total_symb = 0;
 
                 if (isMove){
 
-                    ClearWindow(dc);
                     for (int i = 0; i < line_count; i++)
                         current_total_symb += line_len[i];
 
@@ -189,23 +194,35 @@ int main () {
                     if(current_symb == ' ')
                         words++;
                     
+                    ClearField(dc, pointer.left, pointer.top, pointer.right, pointer.bottom);
+                    ClearField(dc, winrect.left, winrect.bottom / 2, winrect.right, winrect.bottom);
                     MovePointer(line_len[line_count], &line_count);
                     ShowPointer(dc);
 
-                    isMove = false;
-                    current_time = clock();
-                }
 
-                for (int j = 0; j <= 5; j++) {
-                    int div = line_count - shown_lines;
+                    for (int j = 0; j <= 5; j++) {
+                        int div = line_count - shown_lines;
 
-                    if(div == 6){
-                        shown_lines += 6; 
-                        InitPointer();
+                        if(div == 6){
+                            shown_lines += 6;
+                            ClearField(dc, winrect.left, winrect.top, winrect.right, winrect.bottom); 
+                            InitPointer();
+                            ShowPointer(dc);
+                        }
+
+                        InitTextField(j);
+                        DrawText(dc, text_str[j + shown_lines], -1, &textfield, DT_SINGLELINE);
+
+                        if (line_count % 5 == 0 && symbols >= current_total_symb)
+                            j == 0;
+
+                        bool needEnd = ((Mistakes - mist_count) == 0) || ((Time - ((current_time - start) / CLK_TCK)) <= 0);
+                        if ((line_count == counter && symbols >= (total_symb - 1)) || needEnd) {
+                            end = clock();
+                            isEnded = true;
+                            break;
+                        }
                     }
-
-                    InitTextField(j);
-                    DrawText(dc, text_str[j + shown_lines], -1, &textfield, DT_SINGLELINE);
 
                     char buf[10] = "";
                     char table[4][20] = {"Symbols: ", "Mistakes left: ", "Time left: ", "Speed: "};
@@ -228,20 +245,13 @@ int main () {
                     InitTextField(12);
                     DrawText(dc, speed, -1, &textfield, DT_SINGLELINE | DT_CENTER);
 
-                    if (line_count % 5 == 0 && symbols >= current_total_symb)
-                        j == 0;
-
-                    bool needEnd = ((Mistakes - mist_count) == 0) || ((Time - ((current_time - start) / CLK_TCK)) <= 0);
-                    if ((line_count == counter && symbols >= (total_symb - 1)) || needEnd) {
-                        end = clock();
-                        isEnded = true;
-                        break;
-                    }
+                    isMove = false;
+                    current_time = clock();
                 }
 
             } else {
                 if (!isTheEnd){
-                    ClearWindow(dc);
+                    ClearField(dc, winrect.left, winrect.top, winrect.right, winrect.bottom);
                     char buf[10] = "";
                     char table[6][20] = {"Total symbols: ","Right: ", "Mistakes: ", "Total time: ", "Average speed: ", "Words in min: "};
 

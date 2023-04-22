@@ -15,6 +15,13 @@ RECT pointer;
 #define pointerHeight 40
 #define pointerWidth 15
 
+struct FIELD {
+    int left;
+    int top;
+    int right;
+    int bottom;
+} winrect = {0, 0, 1080, 720};
+
 RECT textfield;
 
 HWND time_txt, mistakes_txt;
