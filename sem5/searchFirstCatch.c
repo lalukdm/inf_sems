@@ -19,13 +19,13 @@ int main() {
 
     char s1[LEN], s2[LEN];
 
-    puts("Введдите строку, в которой необходимо искать:");
+    puts("enter string to looking for:");
     for(int i = 0; s1[i - 1] != '\n'; i++)
         s1[i] = getchar();
    
     int str_len = strlen(s1);
    
-    puts("Введите строку, из которой искать совпадение:");
+    puts("enter string which catch need to searh:");
     for(int i = 0; s2[i - 1] != '\n'; i++)
         s2[i] = getchar();
 
