@@ -1,0 +1,23 @@
+<bookstore>
+  <book category="Science Fiction">
+    <isbn>1666463857</isbn>
+    <author>Douglas Adams</author>
+    <title>The Hitchhiker's Guide to the Galaxy</title>
+    <total>16</total>
+    <available>10</available>
+  </book>
+  <book category="Mystery">
+    <isbn>1674683857</isbn>
+    <author>Dan Brown</author>
+    <title>The Da Vinci Code</title>
+    <total>26</total>
+    <available>10</available>
+  </book>
+  <book category="Fantasy">
+    <isbn>1662463857</isbn>
+    <author>J.R.R. Tolkien</author>
+    <title>The Hobbit</title>
+    <total>16</total>
+    <available>8</available>
+  </book>
+</bookstore>

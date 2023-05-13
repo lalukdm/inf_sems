@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "cjson.h": "c",
+        "parser.h": "c",
+        "xmlmemory.h": "c",
+        "tree.h": "c",
+        "string.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}
