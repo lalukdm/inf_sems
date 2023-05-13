@@ -1,9 +1,91 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <libxml2\include\libxml\parser.h>
+
+#include <libxml\tree.h>
 
 #define MAX_DATA_SIZE 1024
 #define MAX_LINES_DB 1024
+
+void xml_to_csv(char* xml_file_path, char* csv_file_path) {
+    xmlDocPtr doc;
+    xmlNodePtr cur;
+    FILE* fptr = fopen(csv_file_path, "w");
+    fprintf(fptr, "category,isbn,author,title,total,available\n");
+    doc = xmlParseFile(xml_file_path);
+    if (doc == NULL) {
+        fprintf(stderr, "Failed to parse XML\n");
+        return;
+    }
+    cur = xmlDocGetRootElement(doc);
+    if (cur == NULL) {
+        fprintf(stderr, "Empty XML document\n");
+        xmlFreeDoc(doc);
+        return;
+    }
+    cur = cur->xmlChildrenNode;
+    while (cur != NULL) {
+        if(!xmlStrcmp(cur->name, (const xmlChar *)"book")) {
+            char category[100], isbn[100], author[100], title[100], total[100], available[100];
+            memset(category, 0, sizeof category);
+            memset(isbn, 0, sizeof isbn);
+            memset(author, 0, sizeof author);
+            memset(title, 0, sizeof title);
+            memset(total, 0, sizeof total);
+            memset(available, 0, sizeof available);
+
+            xmlChar* category_value = xmlGetProp(cur, (const xmlChar *)"category");
+            if (category_value != NULL) {
+                strcpy(category, (const char*)category_value);
+            }
+
+            xmlNodePtr book_node = cur->xmlChildrenNode;
+            while (book_node != NULL) {
+                if(!xmlStrcmp(book_node->name, (const xmlChar *)"isbn")) {
+                    xmlChar* isbn_value = xmlNodeListGetString(doc, book_node->xmlChildrenNode, 1);
+                    if (isbn_value != NULL) {
+                        strcpy(isbn, (const char*)isbn_value);
+                        xmlFree(isbn_value);
+                    }
+                }
+                if(!xmlStrcmp(book_node->name, (const xmlChar *)"author")) {
+                    xmlChar* author_value = xmlNodeListGetString(doc, book_node->xmlChildrenNode, 1);
+                    if (author_value != NULL) {
+                        strcpy(author, (const char*)author_value);
+                        xmlFree(author_value);
+                    }
+                }
+                if(!xmlStrcmp(book_node->name, (const xmlChar *)"title")) {
+                    xmlChar* title_value = xmlNodeListGetString(doc, book_node->xmlChildrenNode, 1);
+                    if (title_value != NULL) {
+                        strcpy(title, (const char*)title_value);
+                        xmlFree(title_value);
+                    }
+                }
+                if(!xmlStrcmp(book_node->name, (const xmlChar *)"total")) {
+                    xmlChar* total_value = xmlNodeListGetString(doc, book_node->xmlChildrenNode, 1);
+                    if (total_value != NULL) {
+                        strcpy(total, (const char*)total_value);
+                        xmlFree(total_value);
+                    }
+                }
+                if(!xmlStrcmp(book_node->name, (const xmlChar *)"available")) {
+                    xmlChar* available_value = xmlNodeListGetString(doc, book_node->xmlChildrenNode, 1);
+                    if (available_value != NULL) {
+                        strcpy(available, (const char*)available_value);
+                        xmlFree(available_value);
+                    }
+                }
+                book_node = book_node->next;
+            }
+            fprintf(fptr, "%s,%s,%s,%s,%s,%s\n", category, isbn, author, title, total, available);
+        }
+        cur = cur->next;
+    }
+    fclose(fptr);
+    xmlFreeDoc(doc);
+}
 
 char* read_string(FILE *file) {
     char* str = NULL;
